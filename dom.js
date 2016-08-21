@@ -64,6 +64,9 @@
     //It will be helpful to do this first because you can use it in a bunch of other functions
     each: function (callback) {
       //add your code here
+      for(var i = 0; i < this.htmlElements.length; i++){
+        callback(this.htmlElements[i])
+      }
     },
     //jQuery .html: http://api.jquery.com/html/
     //If there is NO string passed in as the argument, this function should just return the innerHTML of the first item in the `this.htmlElements` array
@@ -71,7 +74,15 @@
     //the string that was passed in as an argument
     html: function (string) {
       //add your code here
-      //use .innerHTML
+      //use .
+      if(!string){
+          return this.htmlElements[0].innerHTML
+      } else {
+        this.each(function (elem){
+          elem.innerHTML = string
+        })
+      }
+
     },
 
     //jQuery .empty: https://api.jquery.com/empty/
@@ -80,29 +91,51 @@
     empty: function() {
       //add your code here
       // use the html function above
+      this.each(function (elem){
+        elem.innerHTML = ""
+      })
     },
     //jQuery .addClass: https://api.jquery.com/addclass/
     //This function should add a class to each of the elements in the `this.htmlElements` array
     //The class should be set to whatever string is passed in as the 'className' argument
     addClass: function(className) {
       //add your code here
-
+      this.each(function (elem){
+        var classes = elem.className
+        elem.setAttribute('class', classes + " " + className)
+      })
     },
     //jQuery .removeClass: https://api.jquery.com/removeclass/
     //This function should rem ove the class that's passed in as the 'className' argument from each each of the elements in the `this.htmlElements` array
     removeClass: function(className) {
       //add your code here
+      this.each(function (elem){
+        var classes = ''
+        var elemClasses = elem.className.split(' ')
+        for(var i = 0; i < elemClasses.length; i++){
+          if(className != elemClasses[i]){
+            classes += elemClasses[i] 
+          }
+        }
+        elem.setAttribute('class', classes)
+      })
     },
     //jQuery .remove: https://api.jquery.com/remove/
     //This function should remove each element from the 'this.htmlElements' array from the DOM entirely
     remove: function() {
       //add your code here
+      this.each(function (elem){
+        elem.remove()
+      })
     },
     //jQuery .append: http://api.jquery.com/append/
     //This function will receive a string of an  HTML element as an argumenent (for example, `<p>Test</p>`)
     //The function should append the element passed in as an argument to each element in the 'this.htmlElements' array
     append: function(string) {
       //add your code here
+      this.each(function (elem){
+        elem.innerHTML += string
+      })
     },
     //jQuery .attr: http://api.jquery.com/attr/
     //If no 'value' argument is passed into this function, it should just return the attribute (that matches the 'key' that's passed in as the first argument of the function) of the first element in the 'this.htmlElements' array
@@ -111,6 +144,14 @@
     attr: function (key, value) {
       //add your code here
       //use .getAttribute() & .setAttribute()
+      if(!value){
+        return this.htmlElements[0].getAttribute(key)
+      } else {
+        this.each(function (elem){
+          var values = elem.getAttribute(key)
+          elem.setAttribute(key, values + " "+ values)
+        })
+      }
     },
     //jQuery .on: http://api.jquery.com/on/
     //This function should attach an event listener to each of the elements in the 'this.htmlElements' array
@@ -119,6 +160,9 @@
     on: function (event, fn) {
       //add your code here
       //use .addEventListener()
+      this.each(function(elem){
+        elem.addEventListener(event, fn)
+      })
     },
 
     ////////////////////////////////////////////////////////
